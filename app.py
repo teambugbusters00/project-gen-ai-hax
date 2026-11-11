@@ -1,8 +1,10 @@
 """Run: pip install fastapi uvicorn httpx; uvicorn app:app --reload"""
 import os,httpx
 from fastapi import FastAPI,HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel,Field
 app=FastAPI(title="GenAI Document Summarizer")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 class Request(BaseModel):text:str=Field(min_length=80,max_length=30000);style:str="bullet points"
 @app.post("/summarize")
 async def summarize(x:Request):
